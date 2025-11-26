@@ -1,0 +1,68 @@
+// Basic DOM helpers
+const sidebar = document.getElementById('sidebar');
+const links = document.querySelectorAll('.nav-link');
+const openBtn = document.getElementById('openSidebarMobile');
+const closeBtn = document.getElementById('toggleSidebarMobile');
+
+
+// Mobile open/close
+openBtn && openBtn.addEventListener('click', () => {
+  sidebar.classList.add('open');
+});
+closeBtn && closeBtn.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+});
+
+// Smooth scroll and close sidebar on mobile after click
+links.forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.getElementById(a.dataset.target);
+    if (target) {
+      target.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+    // close on mobile
+    if (window.innerWidth < 800) sidebar.classList.remove('open');
+  });
+});
+
+// Active link observer (highlights nav link based on scroll)
+const sections = document.querySelectorAll('main .panel');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      links.forEach(l => l.classList.toggle('active', l.dataset.target === id));
+    }
+  });
+}, { threshold: 0.45 });
+
+sections.forEach(s => observer.observe(s));
+
+// Contact form (demo) - no backend; show quick message
+// const contactForm = document.getElementById('contactForm');
+// const formMsg = document.getElementById('formMsg');
+// if (contactForm) {
+//   contactForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//     formMsg.textContent = "Thanks — your message was recorded (demo). I'll reply soon.";
+//     contactForm.reset();
+//     setTimeout(()=> formMsg.textContent = '', 5000);
+//   });
+// }
+
+
+document.getElementById("viewResume").addEventListener("click", (e) => {
+  e.preventDefault();
+  window.open("RESUME.pdf", "_blank");
+});
+
+
+// small: animate skill bars on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.skill-bar > div').forEach((el) => {
+    const w = el.style.width;
+    el.style.width = '0%';
+    setTimeout(()=> el.style.width = w, 200);
+  });
+});
