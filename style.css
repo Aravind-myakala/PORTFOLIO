@@ -145,7 +145,8 @@ body{
 }
 .top-title{
   flex:1;
-  font-weight:700
+  font-weight:700;
+  
 }
 .top-resume{
   background:transparent;
